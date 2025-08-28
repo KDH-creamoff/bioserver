@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>PPG 분석 결과</title>
+    <style>
+        
+    </style>
+</head>
+    <body>
+        {# <div class="container">
+            <div class="button-group">
+                <a href="{{ url_for('graph', filepath=filename, lib='biosppy', sampling_rate=sampling_rate) }}" 
+                class="lib-btn {% if lib_choice == 'biosppy' %}active{% endif %}">
+                BioSPPy
+                </a>
+                <a href="{{ url_for('graph', filepath=filename, lib='pyppg', sampling_rate=sampling_rate) }}" 
+                class="lib-btn {% if lib_choice == 'pyppg' %}active{% endif %}">
+                pyPPG
+                </a>
+            </div>
+            
+            <h2>{{ lib_choice.upper() }} 분석 결과</h2>
+            <img src="data:image/png;base64,{{ plot_url }}" alt="PPG Signal Graph">
+            
+            <div>
+                <strong>Applied Sampling Rate:</strong> {{ sampling_rate }} Hz<br>
+                {%if lib_choice == "biosppy"%}
+                    <strong>탐지된 피크 개수:</strong> {{ peak_count }} 개
+                {% endif %}
+                {%if lib_choice == "pyppg"%}
+                    <strong>PPG 신호 품질:</strong> {{ ppg_sqi }}
+                {% endif %}
+            </div>
+            
+            <div>
+                <form action="{{ url_for('file_list', sampling_rate=sampling_rate) }}" method="get"><button type="submit">목록으로</button></form>
+                <form action="{{ url_for('homepage') }}" method="get"><button type="submit">홈으로</button></form>
+            </div>
+        </div> #}
+
+        <div class="container">
+            <h1>그래프 분석: {{ filename }}</h1>
+            
+            <div class="settings-form">
+                <form method="GET" action="{{ url_for('graph', filepath=filename) }}">
+                    <h3>그래프 설정</h3>
+                    
+                    <div class="form-group">
+                        <label for="lib">라이브러리:</label>
+                        <select name="lib" id="lib">
+                            <option value="biosppy" {% if lib_choice == 'biosppy' %}selected{% endif %}>Biosppy</option>
+                            <option value="pyppg" {% if lib_choice == 'pyppg' %}selected{% endif %}>PyPPG</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sampling_rate">샘플링 레이트:</label>
+                        <input type="number" name="sampling_rate" id="sampling_rate" value="{{ sampling_rate }}">
+                    </div>
+
+                    <hr>
+
+                    <h3>데이터 범위 조절</h3>
+                    <div class="form-group">
+                        <label for="start">시작:</label>
+                        <input type="number" name="start" id="start" value="{{ start_idx }}" min="1" max="{{ max_length }}">
+
+                        <label for="end">종료:</label>
+                        <input type="number" name="end" id="end" value="{{ end_idx }}" min="1" max="{{ max_length }}">
+                        <span>(최대 길이: {{ max_length }})</span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit">그래프 다시 그리기</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="results">
+                <h3>분석 결과</h3>
+                <p>
+                    {%if lib_choice == "biosppy"%}
+                        <strong>Peak 개수:</strong> {{ peak_count }} <br>
+                    {% endif %}
+                    {%if lib_choice == "pyppg"%}
+                        <strong>신호 품질(SQI):</strong> {{ ppg_sqi }}
+                    {% endif %}
+                </p>
+                <img src="data:image/png;base64,{{ plot_url }}" alt="PPG Signal Graph">
+            </div>
+
+            <div>
+                <form action="{{ url_for('file_list', sampling_rate=sampling_rate) }}" method="get"><button type="submit">목록으로</button></form>
+                <form action="{{ url_for('homepage') }}" method="get"><button type="submit">홈으로</button></form>
+            </div>
+        </div>
+    </body>
+</html>

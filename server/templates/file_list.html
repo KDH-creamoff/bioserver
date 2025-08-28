@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>파일 목록</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div>
+        <h2>파일 목록</h2>
+
+        <form method="get">
+            <label for="sampling_rate"><strong>Sampling Rate (Hz):</strong></label>
+            <input type="number" id="sampling_rate" name="sampling_rate" value="{{ sampling_rate }}" min="1">
+            <button type="submit">적용</button>
+        </form>
+
+        {% if file_list %}
+        <ul>
+            {% for filename in file_list %}
+                <li><a href="{{ url_for('graph', filepath=filename, sampling_rate=sampling_rate) }}">{{ filename }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>업로드된 파일이 없습니다. 홈으로 돌아가 파일을 업로드해주세요.</p>
+        {% endif %}
+        
+        <form action="{{ url_for('homepage') }}" method="get">
+            <button type="submit">홈으로</button>
+        </form>
+    </div>
+</body>
+</html>
