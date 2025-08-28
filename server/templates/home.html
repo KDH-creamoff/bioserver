@@ -45,29 +45,12 @@
 
         <h3>부가 정보</h3>
         <p>
-            on: Onset (시작점), 맥파가 시작되는 가장 낮은 지점입니다.<br>
-            dn: Dicrotic Notch (이완기 노치), 심장 판막이 닫힐 때 생기는 V자 홈입니다.<br>
-            dp: Diastolic Peak (이완기 피크), 이완기 노치 다음에 나타나는 두 번째 작은 봉우리입니다.<br>
-            v: Systolic Peak (수축기 피크), 심장이 피를 뿜어낼 때 생기는 가장 높은 봉우리입니다.<br>
-            w, f: 반사파(Reflection Wave)와 관련된 추가 특징점들입니다. 혈관 상태를 더 상세히 분석하기 위해 사용하는 보조 지표들입니다.
+            on : Onset (시작점), 맥파가 시작되는 가장 낮은 지점입니다.<br>
+            dn : Dicrotic Notch (이완기 노치), 심장 판막이 닫힐 때 생기는 V자 홈입니다.<br>
+            dp : Diastolic Peak (이완기 피크), 이완기 노치 다음에 나타나는 두 번째 작은 봉우리입니다.<br>
+            v : Systolic Peak (수축기 피크), 심장이 피를 뿜어낼 때 생기는 가장 높은 봉우리입니다.<br>
+            w, f : 반사파(Reflection Wave)와 관련된 추가 특징점들입니다. 혈관 상태를 더 상세히 분석하기 위해 사용하는 보조 지표들입니다.
         </p>
     </div>
-
-    <script>
-        // 파일 입력창에 변화가 생기면 선택된 폴더 이름을 표시하는 스크립트
-        const fileInput = document.getElementById('folder-upload');
-        const fileNameSpan = document.getElementById('file-name');
-
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files.length > 0) {
-                // webkitdirectory로 폴더를 선택하면, 첫 번째 파일의 상대 경로에서 폴더명을 추출
-                let path = this.files[0].webkitRelativePath;
-                let folderName = path.split('/')[0];
-                fileNameSpan.textContent = `선택된 폴더: ${folderName}`;
-            } else {
-                fileNameSpan.textContent = '선택된 폴더 없음';
-            }
-        });
-    </script>
 </body>
 </html>
