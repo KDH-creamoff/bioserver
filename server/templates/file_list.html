@@ -16,7 +16,7 @@
             <input type="number" id="sampling_rate" name="sampling_rate" value="{{ sampling_rate }}" min="1">
             <button type="submit">적용</button>
         </form>
-
+        <hr>
         {% if file_list %}
         <ul>
             {% for filename in file_list %}
@@ -26,7 +26,7 @@
         {% else %}
             <p>업로드된 파일이 없습니다. 홈으로 돌아가 파일을 업로드해주세요.</p>
         {% endif %}
-        
+        <hr>
         <form action="{{ url_for('homepage') }}" method="get">
             <button type="submit">홈으로</button>
         </form>

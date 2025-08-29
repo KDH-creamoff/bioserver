@@ -63,6 +63,7 @@ def generate_biosppy_plot(signal, sr, filename):
     ax3.set_xlabel('Time (s)'); ax3.set_ylabel('Heart Rate (bpm)'); ax3.legend(); ax3.grid(True)
     fig.tight_layout(rect=[0, 0.03, 1, 0.95])
     
+    # 의미 없어서 0으로 설정
     ppg_sqi = 0
     return fig, peak_count, ppg_sqi
 
@@ -127,7 +128,8 @@ def generate_pyppg_plot(signal, sr, filename, temp_dir):
         plt.show = original_show
         if temp_file_path and os.path.exists(temp_file_path):
             os.remove(temp_file_path)
-            
+     
+    # 의미 없어서 0으로 설정        
     peak_count = 0
     return fig, peak_count, ppg_sqi
 
@@ -183,13 +185,11 @@ def graph(filepath):
         # 데이터 가공
         df = pd.read_csv(full_path, on_bad_lines='skip')
         signal = df.iloc[1:, 2].to_numpy().flatten()
-        if signal.size < 50 or np.std(signal) < 1e-6:
-            return "오류: CSV 파일의 데이터가 너무 짧거나, 신호에 변화가 없습니다."
+        if signal.size < 50 or np.std(signal) < 1e-6: return "오류: CSV 파일의 데이터가 너무 짧거나, 신호에 변화가 없습니다."
         
         # 세그먼트 길이 설정
         max_length = len(signal)
-        if max_length == 0:
-            return "오류: CSV 파일에서 신호 데이터를 찾을 수 없습니다."
+        if max_length == 0: return "오류: CSV 파일에서 신호 데이터를 찾을 수 없습니다."
 
         # 세그먼트 지정(디폴트 = 1 ~ 끝)
         try:
@@ -203,8 +203,7 @@ def graph(filepath):
                 end_idx = max_length
             else:
                 end_idx = int(end_idx_str)
-        except (ValueError, TypeError):
-            end_idx = max_length
+        except (ValueError, TypeError): end_idx = max_length
             
         start_idx = max(1, start_idx)
         end_idx = min(max_length, end_idx)
@@ -216,10 +215,8 @@ def graph(filepath):
         if signal.size < 50 or np.std(signal) < 1e-6: return "오류: 선택된 범위의 데이터가 너무 짧거나, 신호에 변화가 없습니다."
         
         # 라이브러리 설정 (디폴트 "biosppy")
-        if lib_choice == 'pyppg':
-            fig, peak_count, ppg_sqi = generate_pyppg_plot(signal, sampling_rate, os.path.basename(filepath), app.config['UPLOAD_FOLDER'])
-        else:
-            fig, peak_count, ppg_sqi = generate_biosppy_plot(signal, sampling_rate, os.path.basename(filepath))
+        if lib_choice == 'pyppg': fig, peak_count, ppg_sqi = generate_pyppg_plot(signal, sampling_rate, os.path.basename(filepath), app.config['UPLOAD_FOLDER'])
+        else: fig, peak_count, ppg_sqi = generate_biosppy_plot(signal, sampling_rate, os.path.basename(filepath))
             
     except Exception as e: return f"파일 처리 중 오류가 발생했습니다. (오류: {e})"
     
@@ -242,4 +239,4 @@ def graph(filepath):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
