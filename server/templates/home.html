@@ -1,56 +1,73 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>PPG 분석기</title>
-    <style>
-        
-    </style>
-</head>
-<body>
-    <div>
-        <h2>PPG</h2>
-        <p>분석할 PPG 데이터가 담긴 폴더를 업로드하세요.</p>
-        
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="folder-upload" class="file-select-btn">폴더 선택하기</label>
-            <input id="folder-upload" type="file" name="files" webkitdirectory required>
+    <head>
+        <meta charset="UTF-8">
+        <title>PPG 분석기</title>
+        <style>
             
-            <span id="file-name">선택된 폴더 없음</span>
+        </style>
+    </head>
+    <body>
+        <div>
+            <h2>PPG</h2>
+            <p>분석할 PPG 데이터가 담긴 폴더를 업로드하세요.</p>
+            
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="folder-upload" class="file-select-btn">폴더 선택하기</label>
+                <input id="folder-upload" type="file" name="files" webkitdirectory>
+                
+                <span id="file-name">선택된 폴더 없음</span>
 
-            <button type="submit">업로드</button>
-        </form>
-    </div>
-    <br><hr><br>
-    <div>
-        <h2>도움말</h2>
-        <p>
-            <strong>biosppy</strong>는 Raw signal, peak 위치 및 개수 와 filtered signal 그리고 Heart Rate를 제공합니다.<br>
-            <strong>pyPPG</strong>는 filtered siganl와 그것의 1~3차 미분 신호, 신호의 품질 점수 및 부가 정보를 제공합니다.
-        </p>
+                <button type="submit">업로드</button>
+            </form>
+        </div>
+        <br><hr><br>
+        <div>
+            <h2>도움말</h2>
+            <p>
+                <strong>biosppy</strong>는 Raw signal, peak 위치 및 개수 와 filtered signal 그리고 Heart Rate를 제공합니다.<br>
+                <strong>pyPPG</strong>는 filtered siganl와 그것의 1~3차 미분 신호, 신호의 품질 점수 및 부가 정보를 제공합니다.
+            </p>
 
-        <h4>주의사항!!!</h4>
-        <p>
-            <strong>pyPPG에서 그래프가 출력이 안되는 경우</strong>는 신호의 형태가 pyPPG에 맞지 않거나 <br>
-            <strong>신호의 품질이 매우 안 좋은 것입니다.</strong><br>
-        </p><br>
+            <h4>주의사항!!!</h4>
+            <p>
+                <strong>pyPPG에서 그래프가 출력이 안되는 경우</strong>는 신호의 형태가 pyPPG에 맞지 않거나 <br>
+                <strong>신호의 품질이 매우 안 좋은 것입니다.</strong><br>
+            </p><br>
 
-        <h3>품질 점수</h3>
-        <p>
-            100~90 : 매우 좋음<br>
-            90~70 : 좋음<br>
-            70~50 : 쓸만함<br>
-            50~0 : 사용 불가   
-        </p><br>
+            <h3>품질 점수</h3>
+            <p>
+                100~90 : 매우 좋음<br>
+                90~70 : 좋음<br>
+                70~50 : 쓸만함<br>
+                50~0 : 사용 불가   
+            </p><br>
 
-        <h3>부가 정보</h3>
-        <p>
-            on : Onset (시작점), 맥파가 시작되는 가장 낮은 지점입니다.<br>
-            dn : Dicrotic Notch (이완기 노치), 심장 판막이 닫힐 때 생기는 V자 홈입니다.<br>
-            dp : Diastolic Peak (이완기 피크), 이완기 노치 다음에 나타나는 두 번째 작은 봉우리입니다.<br>
-            v : Systolic Peak (수축기 피크), 심장이 피를 뿜어낼 때 생기는 가장 높은 봉우리입니다.<br>
-            w, f : 반사파(Reflection Wave)와 관련된 추가 특징점들입니다. 혈관 상태를 더 상세히 분석하기 위해 사용하는 보조 지표들입니다.
-        </p>
-    </div>
-</body>
+            <h3>부가 정보</h3>
+            <p>
+                on : Onset (시작점), 맥파가 시작되는 가장 낮은 지점입니다.<br>
+                dn : Dicrotic Notch (이완기 노치), 심장 판막이 닫힐 때 생기는 V자 홈입니다.<br>
+                dp : Diastolic Peak (이완기 피크), 이완기 노치 다음에 나타나는 두 번째 작은 봉우리입니다.<br>
+                v : Systolic Peak (수축기 피크), 심장이 피를 뿜어낼 때 생기는 가장 높은 봉우리입니다.<br>
+                w, f : 반사파(Reflection Wave)와 관련된 추가 특징점들입니다. 혈관 상태를 더 상세히 분석하기 위해 사용하는 보조 지표들입니다.
+            </p>
+        </div>
+
+        <script>
+            const fileInput = document.getElementById('folder-upload');
+            const fileNameSpan = document.getElementById('file-name');
+            fileInput.addEventListener('change', function() {
+                // 사용자가 폴더를 선택했는지 확인합니다.
+                if (this.files && this.files.length > 0) {
+
+                    let path = this.files[0].webkitRelativePath;
+                    let folderName = path.split('/')[0];
+                    
+                    fileNameSpan.textContent = `선택된 폴더: ${folderName}`;
+                } else {
+                    fileNameSpan.textContent = '선택된 폴더 없음';
+                }
+            });
+        </script>
+    </body>
 </html>
